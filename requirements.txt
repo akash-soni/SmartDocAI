@@ -1,0 +1,12 @@
+pandas
+ipykernel
+
+pydantic
+python-dotenv
+
+# LangChain Core
+langchain
+langchain-core
+langchain-community
+langchain_groq
+-e .
