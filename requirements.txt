@@ -9,4 +9,11 @@ langchain
 langchain-core
 langchain-community
 langchain_groq
+langchain_openai
 -e .
+
+
+langchain_google_genai
+
+pypdf
+faiss-cpu
