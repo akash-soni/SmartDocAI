@@ -10,10 +10,12 @@ langchain-core
 langchain-community
 langchain_groq
 langchain_openai
+structlog
 -e .
 
 
 langchain_google_genai
-
+python-dotenv
 pypdf
 faiss-cpu
+PyMuPDF
