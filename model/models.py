@@ -1,6 +1,7 @@
 # pydantic models are defined here
 from pydantic import BaseModel, Field, RootModel
 from typing import Optional, List, Any, Union
+from enum import Enum
 
 class Metadata(BaseModel):
     Summary: List[str]=Field(default_factory=list, description="Summary of the document")
@@ -20,3 +21,9 @@ class ChangeFormat(BaseModel):
 
 class SummaryResponse(RootModel[list[ChangeFormat]]):
     pass
+
+class PromptType(str, Enum):
+    DOCUMENT_ANALYSIS = "document_analysis"
+    DOCUMENT_COMPARISON = "document_comparision"
+    CONTEXTUALIZE_QUESTION = "contextualize_question"
+    CONTEXT_QA = "context_qa"
