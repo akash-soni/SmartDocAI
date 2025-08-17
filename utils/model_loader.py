@@ -2,15 +2,15 @@ import os
 import sys
 from dotenv import load_dotenv
 from utils.config_loader import load_config
+from .config_loader import load_config
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
 #from langchain_openai import ChatOpenAI
-from logger.custom_logger import CustomLogger
+from logger import GLOBAL_LOGGER as log
 from exception.custom_exception import DocumentPortalException
 
-
-log = CustomLogger().get_logger(__name__)
+#log = CustomLogger().get_logger(__name__)
 
 
 class ModelLoader:
@@ -78,19 +78,19 @@ class ModelLoader:
         log.info("Loading LLM", provider=provider, model=model_name, temperature=temperature, max_tokens=max_tokens)
 
 
-        if provider == "groq":
-            llm=ChatGroq(
-                model=model_name,
-                api_key=self.api_keys["GROQ_API_KEY"],
-                temperature=temperature,
-            )
-            return llm
-        
-        elif provider == "google":
+        if provider == "google":
             llm=ChatGoogleGenerativeAI(
                 model=model_name,
                 temperature=temperature,
                 max_output_tokens=max_tokens
+            )
+            return llm
+
+        elif provider == "groq":
+            llm=ChatGroq(
+                model=model_name,
+                api_key=self.api_keys["GROQ_API_KEY"], #type: ignore
+                temperature=temperature,
             )
             return llm
 
