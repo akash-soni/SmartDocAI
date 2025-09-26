@@ -213,8 +213,3 @@ faiss_index/
 
 data/*
 
-__pycache__/
-*.pyc
-*.pyo
-*.pyd   
-.Python
