@@ -2,11 +2,10 @@ import os
 import sys
 from dotenv import load_dotenv
 from utils.config_loader import load_config
-from .config_loader import load_config
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
-#from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from logger import GLOBAL_LOGGER as log
 from exception.custom_exception import DocumentPortalException
 
@@ -32,7 +31,7 @@ class ModelLoader:
         Validate necessary environment variables.
         Ensure API keys exist.
         """
-        required_vars=["GOOGLE_API_KEY","GROQ_API_KEY"]
+        required_vars=["GOOGLE_API_KEY","GROQ_API_KEY","OPENAI_API_KEY"]
         self.api_keys={key:os.getenv(key) for key in required_vars}
         missing = [k for k, v in self.api_keys.items() if not v]
         if missing:
@@ -64,7 +63,7 @@ class ModelLoader:
 
         log.info("Loading LLM...")
         
-        provider_key = os.getenv("LLM_PROVIDER", "google")  # Default groq
+        provider_key = os.getenv("LLM_PROVIDER", "openai")  # Default openai
         if provider_key not in llm_block:
             log.error("LLM provider not found in config", provider_key=provider_key)
             raise ValueError(f"Provider '{provider_key}' not found in config")
@@ -97,21 +96,21 @@ class ModelLoader:
        
             
             
-        # elif provider == "openai":
-        #     return ChatOpenAI(
-        #         model=model_name,
-        #         api_key=self.api_keys["OPENAI_API_KEY"],
-        #         temperature=temperature,
-        #         max_tokens=max_tokens
-        #     )
+        elif provider == "openai":
+            return ChatOpenAI(
+                model=model_name,
+                api_key=self.api_keys["OPENAI_API_KEY"],
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
         else:
             log.error("Unsupported LLM provider", provider=provider)
             raise ValueError(f"Unsupported LLM provider: {provider}")
         
 
 if __name__ == "__main__":
+    #loader object
     loader = ModelLoader()
-    
     # Test embedding model loading
     embeddings = loader.load_embeddings()
     print(f"Embedding Model Loaded: {embeddings}")

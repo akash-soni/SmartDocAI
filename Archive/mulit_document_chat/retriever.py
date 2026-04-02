@@ -17,6 +17,7 @@ from model.models import PromptType
 
 
 class ConverationalRAG:
+
     def __init__(self, session_id: str , retriever= None,):
         try:
             self.log =  CustomLogger().get_logger(__name__)
@@ -100,6 +101,8 @@ class ConverationalRAG:
             self.log.error("Failed to load LLM", error=str(e))
             raise DocumentPortalException("LLM loading error in ConversationalRAG", sys)
     
+    # This method is used to format retrieved documents into a string that can be fed into the prompt.
+    # it is static because it doesn't rely on any instance variables.
     @staticmethod
     def _format_docs(docs):
         return "\n\n".join(d.page_content for d in docs)

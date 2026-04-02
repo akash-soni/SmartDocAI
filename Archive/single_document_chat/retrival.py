@@ -22,6 +22,7 @@ class ConversationalRAG:
         self.session_id = session_id
         self.retriever = retriever
         try:
+            
             self.llm = self._load_llm()
             self.contextualize_prompt = PROMPT_REGISTRY[PromptType.CONTEXTUALIZE_QUESTION.value]
             self.qa_prompt = PROMPT_REGISTRY[PromptType.CONTEXT_QA.value]

@@ -49,7 +49,8 @@ class SingleDocIngestor:
 
             self.log.info("PDF files loaded", count=len(documents))
             return self._create_retriever(documents)
-                
+        
+                 
 
         except Exception as e:
             self.log.error("Document ingestion failed", error=str(e))

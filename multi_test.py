@@ -55,8 +55,8 @@
 ## testing for multidoc chat
 import sys
 from pathlib import Path
-from src.multi_document_chat.data_ingestion import DocumentIngestor
-from src.multi_document_chat.retrieval import ConversationalRAG
+from Archive.mulit_document_chat.data_ingestion import DocumentIngestor
+from Archive.mulit_document_chat.retriever import ConverationalRAG
 
 def test_document_ingestion_and_rag():
     try:
