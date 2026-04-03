@@ -42,6 +42,7 @@ class FaissManager:
     def _exists(self)-> bool:
         return (self.index_dir / "index.faiss").exists() and (self.index_dir / "index.pkl").exists()
     
+    # for deduplication of documents based on content and metadata, we create a unique fingerprint for each document chunk. This helps us avoid adding duplicate entries to the FAISS index, which can save storage space and improve retrieval efficiency.
     @staticmethod
     def _fingerprint(text: str, md: Dict[str, Any]) -> str:
         src = md.get("source") or md.get("file_path")
@@ -94,6 +95,7 @@ class FaissManager:
         
         
 class ChatIngestor:
+   
     def __init__( self,
         temp_base: str = "data",
         faiss_base: str = "faiss_index",
@@ -120,15 +122,16 @@ class ChatIngestor:
         except Exception as e:
             log.error("Failed to initialize ChatIngestor", error=str(e))
             raise DocumentPortalException("Initialization error in ChatIngestor", e) from e
-            
-        
+
+    #create a unique directory for each session if use_session_dirs is True.
     def _resolve_dir(self, base: Path):
         if self.use_session:
             d = base / self.session_id # e.g. "faiss_index/abc123"
             d.mkdir(parents=True, exist_ok=True) # creates dir if not exists
             return d
         return base # fallback: "faiss_index/"
-        
+
+    # split documents into smaller chunks for better embedding and retrieval performance. 
     def _split(self, docs: List[Document], chunk_size=1000, chunk_overlap=200) -> List[Document]:
         splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
         chunks = splitter.split_documents(docs)
@@ -213,6 +216,8 @@ class DocHandler:
         except Exception as e:
             log.error("Failed to read PDF", error=str(e), pdf_path=pdf_path, session_id=self.session_id)
             raise DocumentPortalException(f"Could not process PDF: {pdf_path}", e) from e
+
+
 class DocumentComparator:
     """
     Save, read & combine PDFs for comparison with session-based versioning.

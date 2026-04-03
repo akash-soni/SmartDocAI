@@ -208,7 +208,8 @@ __marimo__/
 
 data/document_analysis/
 data/multi_document_chat/
-faiss_index/
+faiss_index/*
+
 
 
 data/*
@@ -218,3 +219,5 @@ __pycache__/
 *.pyo
 *.pyd   
 .Python
+
+
