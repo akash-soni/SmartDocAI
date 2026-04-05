@@ -17,10 +17,13 @@ COPY requirements.txt .
 COPY .env .
 
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy project files
 COPY . .
+
+# Install the package in editable mode
+RUN pip install -e .
 
 # Expose port
 EXPOSE 8080
