@@ -21,5 +21,3 @@ pytest==8.4.1
 pylint==3.3.7
 pypdf==5.8.0
 cfn-lint
-
--e .
